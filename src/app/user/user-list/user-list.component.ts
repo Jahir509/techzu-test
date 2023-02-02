@@ -1,26 +1,26 @@
 import { Component } from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {SelectionModel} from "@angular/cdk/collections";
+import {PageEvent} from "@angular/material/paginator";
 
 
 export interface PeriodicElement {
   name: string;
   position: number;
-  weight: number;
-  symbol: string;
+  country: string;
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
+  {position: 1, name: 'Hydrogen', country: 'H'},
+  {position: 2, name: 'Helium', country: 'He'},
+  {position: 3, name: 'Lithium', country: 'Li'},
+  {position: 4, name: 'Beryllium', country: 'Be'},
+  {position: 5, name: 'Boron', country: 'B'},
+  {position: 6, name: 'Carbon',  country: 'C'},
+  {position: 7, name: 'Nitrogen',  country: 'N'},
+  {position: 8, name: 'Oxygen',  country: 'O'},
+  {position: 9, name: 'Fluorine',  country: 'F'},
+  {position: 10, name: 'Neon',  country: 'Ne'},
 ];
 
 
@@ -32,7 +32,13 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent {
-  displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
+
+  totalAuthor:number = 1000;
+  postPerPage:number = 10;
+  currentPage:number = 1;
+  pageSizeOptions = [10]
+
+  displayedColumns: string[] = ['select','action', 'position', 'name', 'country'];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   selection = new SelectionModel<PeriodicElement>(true, []);
 
@@ -64,5 +70,11 @@ export class UserListComponent {
 
   check() {
     console.log(this.selection.selected)
+  }
+
+  onChangePage(pageData: PageEvent) {
+    this.currentPage = pageData.pageIndex + 1;
+    this.postPerPage = pageData.pageSize;
+    console.log(this.currentPage,this.postPerPage)
   }
 }

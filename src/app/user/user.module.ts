@@ -11,6 +11,12 @@ import { FilterComponent } from './filter/filter.component';
 import {MatTableModule} from "@angular/material/table";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatInputModule} from "@angular/material/input";
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from "@angular/material/icon";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { DialogComponent } from './dialog/dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 @NgModule({
@@ -20,14 +26,20 @@ import {MatInputModule} from "@angular/material/input";
     UserEditComponent,
     UserViewComponent,
     UserComponent,
-    FilterComponent
+    FilterComponent,
+    DialogComponent,
   ],
   imports: [
     CommonModule,
     UserRoutingModule,
     MatTableModule,
     MatCheckboxModule,
-    MatInputModule
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatPaginatorModule,
+    MatDialogModule
   ]
 })
 export class UserModule { }
