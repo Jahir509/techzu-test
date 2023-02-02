@@ -66,6 +66,8 @@
       (click)="selection.toggle(row)">
   </tr>
 </table>
-<mat-paginator [length]="totalUser" [pageSize]="postPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangePage($event)" showFirstLastButtons></mat-paginator>
+<div class="mt-5">
+  <mat-paginator [length]="totalUser" [pageSize]="postPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangePage($event)" showFirstLastButtons></mat-paginator>
+</div>
 
 

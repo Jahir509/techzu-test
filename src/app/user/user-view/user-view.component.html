@@ -83,6 +83,11 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"
         (click)="selection.toggle(row)">
     </tr>
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+        <h4 class="pt-5 pl-5">No Address added.</h4>
+      </td>
+    </tr>
   </table>
 </div>
 
