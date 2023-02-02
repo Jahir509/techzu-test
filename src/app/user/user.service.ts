@@ -21,4 +21,8 @@ export class UserService {
     let params = new HttpParams().set('user_id',id)
     return this.http.get<any>(apiUrl,{params:params})
   }
+
+  createUser(user:any) {
+    return this.http.post<any>(apiUrl,user);
+  }
 }

@@ -6,12 +6,12 @@ import {MatDialog} from "@angular/material/dialog";
 import {DialogConfig} from "@angular/cdk/dialog";
 import {DialogComponent} from "../dialog/dialog.component";
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import {UserService} from "../user.service";
 
 
 export interface PeriodicElement {
   state: string;
   city: string;
-  address: string;
   zip_code: string;
   tel_no: string;
 }
@@ -42,12 +42,12 @@ export class UserCreateComponent implements OnInit{
   currentPage:number = 1;
   pageSizeOptions = [10]
 
-  displayedColumns: string[] = ['select','state', 'city', 'address', 'zipcode','telephone'];
+  displayedColumns: string[] = ['select','state', 'city', 'zipcode','telephone'];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   selection = new SelectionModel<PeriodicElement>(true, []);
 
 
-  constructor(private matDialog:MatDialog) {
+  constructor(private matDialog:MatDialog,private userService:UserService) {
 
   }
 
@@ -132,5 +132,8 @@ export class UserCreateComponent implements OnInit{
     })
 
     console.log(this.form.value)
+    this.userService.createUser(this.form.value).subscribe((response)=>{
+      console.log(response)
+    })
   }
 }

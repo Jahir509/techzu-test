@@ -70,12 +70,6 @@
         <td mat-cell *matCellDef="let element"> {{element.city}} </td>
       </ng-container>
 
-      <!-- Address Column -->
-      <ng-container matColumnDef="address">
-        <th mat-header-cell *matHeaderCellDef> Address </th>
-        <td mat-cell *matCellDef="let element"> {{element.address}} </td>
-      </ng-container>
-
       <!-- ZipCode Column -->
       <ng-container matColumnDef="zipcode">
         <th mat-header-cell *matHeaderCellDef> ZipCode </th>
@@ -120,6 +114,7 @@
 
   <div class="flex justify-start gap-5 px-10">
     <button
+      disabled="{{form.invalid}}"
       mat-raised-button
       color="accent"
       type="submit">
