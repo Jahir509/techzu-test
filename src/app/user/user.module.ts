@@ -17,6 +17,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { DialogComponent } from './dialog/dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -39,7 +40,9 @@ import {MatDialogModule} from "@angular/material/dialog";
     MatIconModule,
     MatTooltipModule,
     MatPaginatorModule,
-    MatDialogModule
+    MatDialogModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class UserModule { }
