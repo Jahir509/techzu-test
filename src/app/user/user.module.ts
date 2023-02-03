@@ -18,6 +18,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { DialogComponent } from './dialog/dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 
 @NgModule({
@@ -30,19 +31,20 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     FilterComponent,
     DialogComponent,
   ],
-  imports: [
-    CommonModule,
-    UserRoutingModule,
-    MatTableModule,
-    MatCheckboxModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatPaginatorModule,
-    MatDialogModule,
-    FormsModule,
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        UserRoutingModule,
+        MatTableModule,
+        MatCheckboxModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatTooltipModule,
+        MatPaginatorModule,
+        MatDialogModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatProgressSpinnerModule
+    ]
 })
 export class UserModule { }

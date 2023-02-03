@@ -1,30 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {SelectionModel} from "@angular/cdk/collections";
-import {PageEvent} from "@angular/material/paginator";
 import {UserService} from "../user.service";
 import {ActivatedRoute} from "@angular/router";
+import {UserAddress} from "../../models/user-address.interfce";
+import {UserDetail} from "../../models/user-detail.interface";
 
-export interface PeriodicElement {
-  state: string;
-  city: string;
-  zip_code: string;
-  tel_no: string;
-  _id:string
-}
-
-export interface UserDetail{
-  user_id?:string;
-  user_name:string;
-  country:string;
-  created_at:Date;
-  updated_at:Date;
-  address_details:[];
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-
-];
 
 @Component({
   selector: 'app-user-view',
@@ -32,11 +13,17 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./user-view.component.scss']
 })
 export class UserViewComponent implements OnInit{
-  user:UserDetail | undefined;
-
+  user:UserDetail = {
+    user_id: '',
+    user_name: '',
+    country: '',
+    created_at: new Date(),
+    updated_at:new Date(),
+    address_details:[]
+  }
   displayedColumns: string[] = ['select','state', 'city', 'zipcode','telephone'];
-  dataSource = new MatTableDataSource<PeriodicElement>();
-  selection = new SelectionModel<PeriodicElement>(true, []);
+  dataSource = new MatTableDataSource<UserAddress>();
+  selection = new SelectionModel<UserAddress>(true, []);
 
   constructor(private userService:UserService,private activeRoute:ActivatedRoute) {
   }
@@ -71,14 +58,11 @@ export class UserViewComponent implements OnInit{
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: PeriodicElement): string {
+  checkboxLabel(row?: UserAddress): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row}`;
   }
 
-  check() {
-    console.log(this.selection.selected)
-  }
 }

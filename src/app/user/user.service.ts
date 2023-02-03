@@ -20,7 +20,7 @@ export class UserService {
 
   getUserById(id:string){
     let params = new HttpParams().set('user_id',id)
-    return this.http.get<any>(apiUrl,{params:params})
+    return this.http.get<any>(apiUrl,{params:params}).pipe(map(response => response as any));
   }
 
   createUser(user:any) {

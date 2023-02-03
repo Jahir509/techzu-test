@@ -78,3 +78,12 @@
     </button>
   </p>
 </section>
+
+<section *ngIf="data.submitSuccess && data.message">
+  <h1 mat-dialog-title>{{data.message}}</h1>
+  <p class="text-center">
+    <button class="mx-3" mat-raised-button mat-dialog-close color="basic" aria-label="Example icon button with a home icon">
+      Close
+    </button>
+  </p>
+</section>

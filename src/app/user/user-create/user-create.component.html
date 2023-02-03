@@ -3,7 +3,7 @@
 </section>
 
 <form [formGroup]="form" (submit)="createUser()">
-  <div class="flex gap-2">
+  <div class="flex flex-wrap sm:flex-no-wrap gap-3">
     <mat-form-field class="my-input" appearance="fill">
       <mat-label>Name</mat-label>
       <input matInput formControlName="user_name" placeholder="Name">

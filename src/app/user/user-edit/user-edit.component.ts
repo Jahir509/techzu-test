@@ -1,31 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {SelectionModel} from "@angular/cdk/collections";
-import {PageEvent} from "@angular/material/paginator";
 import {DialogComponent} from "../dialog/dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {UserService} from "../user.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
-
-export interface PeriodicElement {
-  state: string;
-  city: string;
-  zip_code: string;
-  tel_no: string;
-  _id:string
-}
-
-export interface UserDetail{
-  user_id?:string;
-  user_name:string;
-  country:string;
-  created_at:Date;
-  updated_at:Date;
-  address_details:[];
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [];
+import {UserAddress} from "../../models/user-address.interfce";
+import { UserDetail } from 'src/app/models/user-detail.interface';
 
 @Component({
   selector: 'app-user-edit',
@@ -37,8 +19,8 @@ export class UserEditComponent implements OnInit{
   user!:UserDetail;
 
   displayedColumns: string[] = ['select','action','state', 'city', 'zipcode','telephone'];
-  dataSource = new MatTableDataSource<PeriodicElement>();
-  selection = new SelectionModel<PeriodicElement>(true, []);
+  dataSource = new MatTableDataSource<UserAddress>();
+  selection = new SelectionModel<UserAddress>(true, []);
 
   constructor(private matDialog:MatDialog,
               private userService:UserService,
@@ -84,15 +66,11 @@ export class UserEditComponent implements OnInit{
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: PeriodicElement): string {
+  checkboxLabel(row?: UserAddress): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row}`;
-  }
-
-  check() {
-    console.log(this.selection.selected)
   }
 
   addRow() {
@@ -106,7 +84,6 @@ export class UserEditComponent implements OnInit{
       if(data != undefined){
         this.dataSource.data = [...this.dataSource.data,data]
       }
-      console.log(this.dataSource.data)
     });
   }
 
@@ -115,7 +92,6 @@ export class UserEditComponent implements OnInit{
   }
 
   update() {
-    console.log(this.dataSource.data)
     if(this.dataSource.data.length < 1){
       (this.form.controls['address_details'] as FormArray).clear()
     }
@@ -132,9 +108,21 @@ export class UserEditComponent implements OnInit{
     })
 
     dialogref.afterClosed().subscribe((data)=>{
-      console.log(data)
-      this.form.reset();
-      this.router.navigateByUrl("/userlist")
+      if(data != null){
+        const dialogref = this.matDialog.open(DialogComponent,{
+          data:{
+            submitSuccess:true,
+            message:"User updated successfully"
+          }
+        })
+        dialogref.afterOpened().subscribe(()=>{
+          setTimeout(()=>{
+            this.form.reset();
+            dialogref.close();
+            this.router.navigateByUrl("/userlist")
+          },3000)
+        })
+      }
     })
   }
 
@@ -163,7 +151,6 @@ export class UserEditComponent implements OnInit{
         this.deleteRow()
         this.dataSource.data = [...this.dataSource.data,data]
       }
-      console.log(this.dataSource.data)
     });
   }
 }

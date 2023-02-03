@@ -1,36 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {SelectionModel} from "@angular/cdk/collections";
-import {PageEvent} from "@angular/material/paginator";
 import {MatDialog} from "@angular/material/dialog";
-import {DialogConfig} from "@angular/cdk/dialog";
 import {DialogComponent} from "../dialog/dialog.component";
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../user.service";
 import {Router} from "@angular/router";
+import {UserAddress} from "../../models/user-address.interfce";
 
-
-export interface PeriodicElement {
-  state: string;
-  city: string;
-  zip_code: string;
-  tel_no: string;
-  _id?:string
-
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  // {state: 'Hydrogen', city: 'H', address: 'Address-H', zipcode: 'State-H',telephone: '01991339009'},
-  // {state: 'Helium', city: 'He', address: 'Address-He', zipcode: 'State-He',telephone: '01991339009'},
-  // {state: 'Lithium', city: 'Li', address: 'Address-Li', zipcode: 'State-Li',telephone: '01991339009'},
-  // {state: 'Beryllium', city: 'Be', address: 'Address-Be', zipcode: 'State-Be',telephone: '01991339009'},
-  // {state: 'Boron', city: 'B', address: 'Address-B', zipcode: 'State-B',telephone: '01991339009'},
-  // {state: 'Carbon',  city: 'C', address: 'Address-C', zipcode: 'State-C',telephone: '01991339009'},
-  // {state: 'Nitrogen',  city: 'N', address: 'Address-N', zipcode: 'State-N',telephone: '01991339009'},
-  // {state: 'Oxygen',  city: 'O', address: 'Address-O', zipcode: 'State-O',telephone: '01991339009'},
-  // {state: 'Fluorine',  city: 'F', address: 'Address-F', zipcode: 'State-F',telephone: '01991339009'},
-  // {state: 'Neon',  city: 'Ne', address: 'Address-Ne', zipcode: 'State-Ne',telephone: '01991339009'},
-];
 
 
 @Component({
@@ -39,19 +16,16 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./user-create.component.scss']
 })
 export class UserCreateComponent implements OnInit{
+
   form!: FormGroup;
-  totalAuthor:number = 1000;
-  postPerPage:number = 10;
-  currentPage:number = 1;
-  pageSizeOptions = [10]
-
   displayedColumns: string[] = ['select','action','state', 'city', 'zipcode','telephone'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-  selection = new SelectionModel<PeriodicElement>(true, []);
+  dataSource = new MatTableDataSource<UserAddress>();
+  selection = new SelectionModel<UserAddress>(true, []);
 
 
-  constructor(private matDialog:MatDialog,private userService:UserService,private router:Router) {
-
+  constructor(private matDialog:MatDialog,
+              private userService:UserService,
+              private router:Router) {
   }
 
   ngOnInit() {
@@ -77,22 +51,13 @@ export class UserCreateComponent implements OnInit{
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: PeriodicElement): string {
+  checkboxLabel(row?: UserAddress): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row}`;
   }
 
-  check() {
-    console.log(this.selection.selected)
-  }
-
-  onChangePage(pageData: PageEvent) {
-    this.currentPage = pageData.pageIndex + 1;
-    this.postPerPage = pageData.pageSize;
-    console.log(this.currentPage,this.postPerPage)
-  }
 
   addRow() {
     const dialogref = this.matDialog.open(DialogComponent,{
@@ -104,7 +69,6 @@ export class UserCreateComponent implements OnInit{
       if(data != undefined){
         this.dataSource.data = [...this.dataSource.data,data]
       }
-      console.log(this.dataSource.data)
     });
   }
 
@@ -120,25 +84,25 @@ export class UserCreateComponent implements OnInit{
     })
   }
 
-  // createAddressArray() {
-  //   return new FormGroup({
-  //     'state': new FormControl(null),
-  //     'city': new FormControl(null),
-  //     'zip_code': new FormControl(null),
-  //     'tel_no': new FormControl(null)
-  //   });
-  // }
   createUser(){
-    //this.form.controls['address_details'].setValue(this.dataSource.data)
     this.dataSource.data.forEach(item=>{
       (this.form.controls['address_details'] as FormArray).push(new FormControl(item))
     })
 
-    console.log(this.form.value)
     this.userService.createUser(this.form.value).subscribe((response)=>{
       if(response.status === 'OK'){
-        alert("User is created successfully")
-        this.router.navigateByUrl("/userlist")
+        const dialogRef = this.matDialog.open(DialogComponent,{
+          data:{
+            submitSuccess:true,
+            message:"User created successfully"
+          }
+        })
+        dialogRef.afterOpened().subscribe(()=>{
+          setTimeout(()=>{
+            dialogRef.close();
+            this.router.navigateByUrl("/userlist");
+          },3000)
+        })
       }
     })
   }
@@ -155,7 +119,6 @@ export class UserCreateComponent implements OnInit{
         this.deleteRow()
         this.dataSource.data = [...this.dataSource.data,data]
       }
-      console.log(this.dataSource.data)
     });
   }
 }

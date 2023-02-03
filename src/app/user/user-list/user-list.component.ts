@@ -3,15 +3,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {SelectionModel} from "@angular/cdk/collections";
 import {PageEvent} from "@angular/material/paginator";
 import {UserService} from "../user.service";
-
-
-export interface User {
-  user_name: string;
-  country: string;
-  created_at: Date;
-  update_at: Date;
-  user_id: string;
-}
+import {UserDetail} from "../../models/user-detail.interface";
 
 @Component({
   selector: 'app-user-list',
@@ -20,6 +12,7 @@ export interface User {
 })
 export class UserListComponent implements OnInit{
 
+  isLoading:boolean = false;
   totalUser:number = 0;
   postPerPage:number = 10;
   currentPage:number = 0;
@@ -27,8 +20,8 @@ export class UserListComponent implements OnInit{
   filterName:string = '';
   filterCountry:string = '';
   displayedColumns: string[] = ['select','action', 'name', 'country'];
-  dataSource = new MatTableDataSource<User>();
-  selection = new SelectionModel<User>(true, []);
+  dataSource = new MatTableDataSource<UserDetail>();
+  selection = new SelectionModel<UserDetail>(true, []);
 
   constructor(private userService:UserService) {
   }
@@ -58,7 +51,7 @@ export class UserListComponent implements OnInit{
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: User): string {
+  checkboxLabel(row?: UserDetail): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
@@ -72,8 +65,10 @@ export class UserListComponent implements OnInit{
   }
 
   getData() {
+    this.isLoading = true;
     this.userService.getUsers(this.currentPage,this.postPerPage).subscribe((response)=>{
       if(response.status === 'OK' && response.data.length > 0 ){
+        this.isLoading = false;
         this.dataSource.data = response.data;
         this.totalUser = response.meta.total;
         this.postPerPage = response.meta.perPage;
@@ -84,10 +79,18 @@ export class UserListComponent implements OnInit{
   }
 
   onNameChange($event: string) {
-    this.dataSource.filter = $event.trim().toLowerCase()
+    this.isLoading = true;
+    setTimeout(()=>{
+      this.isLoading = false;
+      this.dataSource.filter = $event.trim().toLowerCase()
+    },600)
   }
 
   onCountryChange($event: string) {
-    this.dataSource.filter = $event.trim().toLowerCase()
+    this.isLoading = true;
+    setTimeout(()=>{
+      this.isLoading = false;
+      this.dataSource.filter = $event.trim().toLowerCase()
+    },600)
   }
 }

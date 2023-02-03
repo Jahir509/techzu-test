@@ -2,13 +2,8 @@ import {Component, Inject} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {FormGroup, FormControl, Validators} from "@angular/forms";
 import {UserService} from "../user.service";
-export interface PeriodicElement {
-  state?: string;
-  city?: string;
-  address?: string;
-  zip_code?: number;
-  tel_no?: string;
-}
+import {UserAddress} from "../../models/user-address.interfce";
+
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
@@ -26,7 +21,7 @@ export class DialogComponent {
   }
 
   grabData(){
-    const addressData:PeriodicElement = {
+    const addressData:UserAddress = {
       state:this.form.value.state,
       city:this.form.value.city,
       address:this.form.value.address,
@@ -68,7 +63,7 @@ export class DialogComponent {
     })
   }
 
-  organizeData(dataForUpdate:PeriodicElement) {
+  organizeData(dataForUpdate:UserAddress) {
     this.form.controls['state'].setValue(dataForUpdate.state)
     this.form.controls['city'].setValue(dataForUpdate.city)
     this.form.controls['address'].setValue(dataForUpdate.address)
