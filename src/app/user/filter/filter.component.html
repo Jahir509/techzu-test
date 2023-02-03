@@ -1,20 +1,17 @@
-<p>filter works!</p>
 <div class="flex flex-row">
   <div class="mx-2">
     <p>
-      <mat-form-field appearance="fill">
+      <mat-form-field class="my-input" appearance="fill">
         <mat-label>Name</mat-label>
-        <input matInput placeholder="Name">
-<!--        <mat-hint>Hint</mat-hint>-->
+        <input matInput placeholder="Name" (input)="nameFilterChange($event)">
       </mat-form-field>
     </p>
   </div>
   <div class="mx-2">
     <p>
-      <mat-form-field appearance="fill">
+      <mat-form-field class="my-input" appearance="fill">
         <mat-label>Country</mat-label>
-        <input matInput placeholder="Country">
-<!--        <mat-hint>Hint</mat-hint>-->
+        <input matInput placeholder="Country" (input)="countryFilterChange($event)">
       </mat-form-field>
     </p>
   </div>

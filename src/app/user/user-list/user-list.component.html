@@ -1,8 +1,16 @@
-<app-filter></app-filter>
+<div class="mt-5">
+  <p class="pl-3 text-3xl pb-5">
+    Users
+  </p>
+  <app-filter
+    (nameChange)="onNameChange($event)"
+    (countryChange)="onCountryChange($event)"
+  ></app-filter>
+</div>
 
-<div class="flex justify-end m-5">
+<div class="flex justify-end m-5 mt-0">
   <div class="example-button-row">
-    <button mat-fab extended color="accent" routerLink="create">
+    <button mat-fab extended class="my-button primary" routerLink="create">
       <mat-icon>add</mat-icon>
       Create
     </button>
@@ -35,13 +43,13 @@
     <th mat-header-cell *matHeaderCellDef> Action </th>
     <td mat-cell *matCellDef="let element;let i=index">
       <div class="flex gap-2">
-        <div matTooltip="View" class="example-disabled">
-          <button mat-mini-fab aria-label="Example mini fab with a heart icon" routerLink="view/{{element.user_id}}">
+        <div matTooltip="View" class="example-disabled" >
+          <button class="primary" mat-mini-fab routerLink="view/{{element.user_id}}">
             <mat-icon>visibility</mat-icon>
           </button>
         </div>
         <div matTooltip="Edit" class="example-disabled">
-          <button mat-mini-fab aria-label="Example mini fab with a heart icon" routerLink="edit/{{element.user_id}}">
+          <button class="primary" mat-mini-fab routerLink="edit/{{element.user_id}}">
             <mat-icon>edit</mat-icon>
           </button>
         </div>

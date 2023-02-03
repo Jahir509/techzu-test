@@ -2,7 +2,7 @@
   <div class="flex justify-between">
     <h1 mat-dialog-title>Address Details</h1>
     <div mat-dialog-actions>
-      <button mat-mini-fab fab mat-dialog-close color="warn" aria-label="Example icon button with a home icon">
+      <button mat-mini-fab mat-dialog-close class="secondary" aria-label="Example icon button with a home icon">
         <mat-icon>close</mat-icon>
       </button>
     </div>
@@ -14,6 +14,9 @@
           <mat-form-field class="example-full-width">
             <mat-label>State</mat-label>
             <input matInput formControlName="state" placeholder="State">
+            <mat-error *ngIf="form.get('state')?.hasError('required')">
+              State is required
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field class="example-full-width mt-1.5">
@@ -25,6 +28,9 @@
           <mat-form-field class="example-full-width">
             <mat-label>City</mat-label>
             <input matInput formControlName="city" placeholder="City">
+            <mat-error *ngIf="form.get('city')?.hasError('required')">
+              City is required
+            </mat-error>
           </mat-form-field>
           <mat-form-field class="example-full-width">
             <mat-label>Zip Code</mat-label>
@@ -50,7 +56,7 @@
               disabled="{{form.invalid}}"
               type="submit"
               aria-label="Example icon button with a home icon"
-              color="primary"
+              class="my-button primary"
               mat-raised-button>
               <mat-icon>add</mat-icon>
               Add
@@ -61,10 +67,10 @@
     </div>
   </div>
 </section>
-<section *ngIf="!data.isFormOpen && data.isUpdateButtonClicked">
+<section *ngIf="!data.isFormOpen && data.isUpdateButtonClicked && data.formData">
   <h1 mat-dialog-title>Are you Sure want to modify the document</h1>
   <p class="text-center">
-    <button class="mx-3" mat-raised-button color="warn" aria-label="Example icon button with a home icon">
+    <button class="mx-3" mat-raised-button color="warn" aria-label="Example icon button with a home icon" (click)="submitData()">
       Yes
     </button>
     <button class="mx-3" mat-raised-button mat-dialog-close color="basic" aria-label="Example icon button with a home icon">
@@ -72,4 +78,3 @@
     </button>
   </p>
 </section>
-

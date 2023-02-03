@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
+import {map} from "rxjs";
 
 const apiUrl = 'https://techzuapi.azurewebsites.net/api/user'
 
@@ -23,6 +24,10 @@ export class UserService {
   }
 
   createUser(user:any) {
-    return this.http.post<any>(apiUrl,user);
+    return this.http.post<any>(apiUrl,user).pipe(map(response => response as any));
+  }
+
+  updateUser(data: any) {
+    return this.http.patch(apiUrl,data).pipe(map(response => response as any))
   }
 }

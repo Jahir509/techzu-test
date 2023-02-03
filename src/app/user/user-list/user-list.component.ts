@@ -13,13 +13,6 @@ export interface User {
   user_id: string;
 }
 
-const ELEMENT_DATA: User[] = [
-
-];
-
-
-
-
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
@@ -27,11 +20,12 @@ const ELEMENT_DATA: User[] = [
 })
 export class UserListComponent implements OnInit{
 
-  totalUser:number = 1000;
+  totalUser:number = 0;
   postPerPage:number = 10;
-  currentPage:number = 1;
+  currentPage:number = 0;
   pageSizeOptions = []
-
+  filterName:string = '';
+  filterCountry:string = '';
   displayedColumns: string[] = ['select','action', 'name', 'country'];
   dataSource = new MatTableDataSource<User>();
   selection = new SelectionModel<User>(true, []);
@@ -41,15 +35,7 @@ export class UserListComponent implements OnInit{
 
   ngOnInit() {
     this.dataSource.data = []
-    this.userService.getUsers().subscribe((response)=>{
-      if(response.status === 'OK' && response.data.length > 0 ){
-        this.dataSource.data = response.data;
-        this.totalUser = response.meta.total;
-        this.postPerPage = response.meta.perPage;
-        this.currentPage = response.meta.page;
-        this.pageSizeOptions = response.meta.postPerPage;
-      }
-    })
+    this.getData();
   }
 
 
@@ -79,13 +65,29 @@ export class UserListComponent implements OnInit{
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row}`;
   }
 
-  check() {
-    console.log(this.selection.selected)
+  onChangePage(pageData: PageEvent) {
+    this.currentPage = pageData.pageIndex;
+    this.postPerPage = pageData.pageSize;
+    this.getData();
   }
 
-  onChangePage(pageData: PageEvent) {
-    this.currentPage = pageData.pageIndex + 1;
-    this.postPerPage = pageData.pageSize;
-    console.log(this.currentPage,this.postPerPage)
+  getData() {
+    this.userService.getUsers(this.currentPage,this.postPerPage).subscribe((response)=>{
+      if(response.status === 'OK' && response.data.length > 0 ){
+        this.dataSource.data = response.data;
+        this.totalUser = response.meta.total;
+        this.postPerPage = response.meta.perPage;
+        this.currentPage = response.meta.page;
+        this.pageSizeOptions = response.meta.postPerPage;
+      }
+    })
+  }
+
+  onNameChange($event: string) {
+    this.dataSource.filter = $event.trim().toLowerCase()
+  }
+
+  onCountryChange($event: string) {
+    this.dataSource.filter = $event.trim().toLowerCase()
   }
 }

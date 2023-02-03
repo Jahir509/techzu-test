@@ -4,4 +4,45 @@
 @tailwind utilities;
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-size: 12px}
+.my-button {
+  height: 30px !important;
+}
+
+.primary{
+  background-color: #2B324C !important;
+  color: #fff !important;
+}
+
+
+.primary:disabled{
+  background-color: #bdbdbd !important;
+  color: #fff !important;
+}
+.mini{
+  width: 10px !important;
+}
+.danger{
+  background-color: #f44336 !important;
+  color: #fff !important;
+}
+
+.secondary{
+  background-color: #4476B6 !important;
+  color: #fff !important;
+}
+
+.secondary:disabled{
+  background-color: #bdbdbd !important;
+  color: #fff !important;
+}
+
+.my-input{
+  width: 350px;
+}
+
+th{
+  background-color: #2B324C !important;
+  color: #fff !important;
+}
+

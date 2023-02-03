@@ -3,19 +3,25 @@
 </section>
 
 <form [formGroup]="form" (submit)="createUser()">
-  <div class="">
-    <mat-form-field appearance="fill">
+  <div class="flex gap-2">
+    <mat-form-field class="my-input" appearance="fill">
       <mat-label>Name</mat-label>
       <input matInput formControlName="user_name" placeholder="Name">
-      <!--    <mat-hint align="end">{{input.value.length}}/10</mat-hint>-->
+      <mat-error *ngIf="form.get('user_name')?.hasError('required')">
+        Username is required
+      </mat-error>
     </mat-form-field>
-    <mat-form-field appearance="fill">
+    <mat-form-field class="my-input" appearance="fill">
       <mat-label>Country</mat-label>
       <input matInput formControlName="country" placeholder="Country">
-      <!--    <mat-hint align="end">{{input.value.length}}/10</mat-hint>-->
+      <mat-error *ngIf="form.get('country')?.hasError('required')">
+        country is required
+      </mat-error>
     </mat-form-field>
   </div>
-
+  <div class="mini-header">
+    <h3>Address Detail</h3>
+  </div>
   <div class="example-container">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
@@ -42,16 +48,14 @@
         <th mat-header-cell *matHeaderCellDef> Action </th>
         <td mat-cell *matCellDef="let element;let i=index">
           <div class="flex gap-2">
-            <div matTooltip="View" class="example-disabled">
-              <button mat-mini-fab aria-label="Example mini fab with a heart icon" routerLink="view/{{i}}">
-                <mat-icon>favorite</mat-icon>
-              </button>
-            </div>
             <div matTooltip="Edit" class="example-disabled">
               <button mat-mini-fab
+                      class="my-button primary"
                       aria-label="Example mini fab with a heart icon"
-                      routerLink="edit/{{i}}">
-                <mat-icon>favorite</mat-icon>
+                      type="button"
+                      (click)="editAddress(element)"
+                      >
+                <mat-icon>edit</mat-icon>
               </button>
             </div>
           </div>
@@ -96,7 +100,7 @@
 
   <div class="flex justify-end gap-5 px-10 m-10">
     <button mat-raised-button
-            color="accent"
+            class="my-button primary"
             (click)="addRow()"
             type="button"
     >
@@ -104,7 +108,7 @@
     </button>
     <button
       mat-raised-button
-      color="warn"
+      class="my-button danger"
       (click)="deleteRow()"
       type="button"
     >
@@ -116,6 +120,7 @@
     <button
       disabled="{{form.invalid}}"
       mat-raised-button
+      class="my-button primary"
       color="accent"
       type="submit">
       <mat-icon>add</mat-icon>

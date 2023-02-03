@@ -7,6 +7,7 @@ import {DialogConfig} from "@angular/cdk/dialog";
 import {DialogComponent} from "../dialog/dialog.component";
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../user.service";
+import {Router} from "@angular/router";
 
 
 export interface PeriodicElement {
@@ -14,6 +15,8 @@ export interface PeriodicElement {
   city: string;
   zip_code: string;
   tel_no: string;
+  _id?:string
+
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
@@ -42,12 +45,12 @@ export class UserCreateComponent implements OnInit{
   currentPage:number = 1;
   pageSizeOptions = [10]
 
-  displayedColumns: string[] = ['select','state', 'city', 'zipcode','telephone'];
+  displayedColumns: string[] = ['select','action','state', 'city', 'zipcode','telephone'];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   selection = new SelectionModel<PeriodicElement>(true, []);
 
 
-  constructor(private matDialog:MatDialog,private userService:UserService) {
+  constructor(private matDialog:MatDialog,private userService:UserService,private router:Router) {
 
   }
 
@@ -106,7 +109,7 @@ export class UserCreateComponent implements OnInit{
   }
 
   deleteRow(){
-    console.log(this.selection.selected)
+    this.dataSource.data = this.dataSource.data.filter(x=> !this.selection.selected.find(y=> y.state === x.state))
   }
 
   createForm(){
@@ -133,7 +136,26 @@ export class UserCreateComponent implements OnInit{
 
     console.log(this.form.value)
     this.userService.createUser(this.form.value).subscribe((response)=>{
-      console.log(response)
+      if(response.status === 'OK'){
+        alert("User is created successfully")
+        this.router.navigateByUrl("/userlist")
+      }
     })
+  }
+
+  editAddress(element:any) {
+    const dialogref = this.matDialog.open(DialogComponent,{
+      data:{
+        isFormOpen:true,
+        setForUpdate:element
+      }
+    })
+    dialogref.afterClosed().subscribe((data)=>{
+      if(data != undefined){
+        this.deleteRow()
+        this.dataSource.data = [...this.dataSource.data,data]
+      }
+      console.log(this.dataSource.data)
+    });
   }
 }
