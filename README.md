@@ -14,9 +14,9 @@ Run `ng serve` or `ng s` or `npm start` for a dev server. Navigate to `http://lo
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Live Product
+## Live Production
 
-There is already been a production version deployed on [Vercel](https://karma-runner.github.io).
+There is already been a production version deployed on [Vercel](https://techzu-test.vercel.app/).
 
 
 ## Further help
